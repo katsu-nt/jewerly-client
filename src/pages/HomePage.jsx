@@ -1,10 +1,12 @@
-import React from 'react'
-import LogoutButton from "../components/LogoutButton.jsx"
+import React from 'react';
+import mainIMG from '../assets/Banner-Top-san-pham-yeu-thich-PC.jpg'
+
 export default function HomePage() {
   return (
-    <div><LogoutButton></LogoutButton>
-    
-    <h1 className='text-3x font-normal'>Dumoe Thanh</h1>
+    <div className='home-container'>
+      <div className='img-main'>
+        <img style={{width: '100%'}} src={mainIMG} alt="" />
+      </div>
     </div>
   )
 }

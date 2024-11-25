@@ -23,6 +23,10 @@ const LoginPage = () => {
         if (user.role == "admin") {
           navigate('/admin');
         }
+
+        let dataUser = user;
+        dataUser.password = '********';
+        localStorage.setItem('account', JSON.stringify(dataUser));
       }
     })
 

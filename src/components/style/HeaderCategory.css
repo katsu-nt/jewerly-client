@@ -1,0 +1,9 @@
+.category-item{
+    color: #000;
+    text-wrap: nowrap;
+}
+
+.category-item:hover{
+    color: #c60018;
+    transition: 0.5s;
+}

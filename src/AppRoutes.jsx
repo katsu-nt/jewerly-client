@@ -4,17 +4,17 @@ import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-do
 import { AuthProvider } from './context/authContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginPage from './pages/LoginPage.jsx';
-import LogoutButton from './components/LogoutButton.jsx';
 import ClientLayout from './layouts/ClientLayout.jsx';
 import AdminLayout from "./layouts/AdminLayout.jsx"
 import HomePage from './pages/HomePage.jsx';
+import ListProduct from './components/ListProduct.jsx';
 
 const AppRoutes = () => {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<ClientLayout><HomePage/></ClientLayout>} />
+          <Route path="/trang-chu" element={<ClientLayout><HomePage/></ClientLayout>} />
           <Route path="/login" element={<ClientLayout><LoginPage/></ClientLayout>} />
           <Route
             path="/admin"
@@ -32,7 +32,15 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
+          <Route
+            path="/vong-lac"
+            element={
+              <ProtectedRoute allowedRoles={['user']}>
+               <ClientLayout><ListProduct/></ClientLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
         </Routes>
       </Router>
     </AuthProvider>
