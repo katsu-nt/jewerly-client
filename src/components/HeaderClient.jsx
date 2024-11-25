@@ -1,10 +1,5 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 import HeaderCategory from './HeaderCategory';
 import './style/HeaderClient.css'
@@ -38,7 +33,7 @@ export default function HeaderClient() {
                         ?
                         <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                             <div className='cart'>
-                                <i onClick={() => openCart()} class="fa-solid fa-basket-shopping"></i>
+                                <i onClick={() => openCart()} className="fa-solid fa-basket-shopping"></i>
                             </div>
 
                             <div className='current-account' onClick={() => openAccountDetail()}>

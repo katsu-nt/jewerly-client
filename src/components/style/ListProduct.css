@@ -1,0 +1,68 @@
+.cate-container{
+    padding: 10px 120px;
+}
+
+.cate-container .title-cate{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    text-transform: uppercase;
+    width: 100%;
+    align-items: center;
+}
+
+.title-cate .title-name{
+    font-size: 35px;
+    width: 200px;
+    text-align: center;
+    text-wrap: nowrap;
+}
+
+.title-cate .title-line{
+    height: 1px;
+    background-color: #000;
+    width: 100%;
+}
+
+.filter-product-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); /* Chia container thành 12 phần bằng nhau */
+    align-items: center;
+    width: 100%;
+    height: auto;
+    border: 1px solid #000;
+    border-radius: 6px;
+    padding: 10px;
+    gap: 10px;
+}
+
+#select-size {
+    grid-column: span 2; /* Chiếm 2 phần */
+    margin: 0;
+}
+
+#select-gender {
+    grid-column: span 2; /* Chiếm 2 phần */
+    margin: 0;
+}
+
+#select-range {
+    grid-column: span 3; /* Chiếm 3 phần */
+    margin: 0;
+}
+
+#text-search{
+    grid-column: span 5; /* Chiếm 3 phần */
+    font-size: 12px;
+    height: 40px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 0 10px;
+}
+
+.list-product-container{
+    margin-top: 20px;
+    width: 100%;
+    height: 500px;
+    background-color: aquamarine;
+}
