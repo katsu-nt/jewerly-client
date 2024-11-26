@@ -34,9 +34,17 @@ export default function HeaderAdmin() {
       <div className='header-logo'>
         <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
           <img className='img-logo' src={logo} alt="" />
-          {listModule.map((module, index) => (
-            <div className='item-module' id={index} onClick={() => onClickModule(module)}>{module.name}</div>
+          {listModule.map((module) => (
+            <div
+              key={module.id} // Add the key prop here
+              className="item-module"
+              id={module.id}
+              onClick={() => onClickModule(module)}
+            >
+              {module.name}
+            </div>
           ))}
+
         </div>
 
         <div className='group-button'>
