@@ -40,9 +40,9 @@ const GroupFilterListProduct = ({ onFilterChange }) => {
                     label="Kích thước"
                     onChange={(e) => handleValueChange(e, 'size')}  // Truyền đúng key vào đây
                 >
-                    <MenuItem value={16}>16</MenuItem>
-                    <MenuItem value={17}>17</MenuItem>
-                    <MenuItem value={18}>18</MenuItem>
+                    <MenuItem value={'M'}>Size M</MenuItem>
+                    <MenuItem value={'L'}>Size L</MenuItem>
+                    <MenuItem value={'XL'}>Size XL</MenuItem>
                 </Select>
             </FormControl>
 
