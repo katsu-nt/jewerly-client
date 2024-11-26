@@ -11,7 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { MenuItem, Select } from '@mui/material';
-import { insertProduct } from '../APIs/MyProductApi';
+import { deleteProduct, getAllProducts, insertProduct, updateProduct } from '../APIs/MyProductApi';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,10 +46,12 @@ const listCategories = [
   { id: 9, name: 'Phụ kiện', link: '/phu-kien' },
 ];
 
+
 const ManageProductAdmin = () => {
   const [open, setOpen] = React.useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [errors, setErrors] = useState({});
+  const [listProduct, setListProduct] = useState([]);
+  const [statusDrawer, setStatusDrawer] = useState(); // 1 Thêm mới, 2 Chỉnh sửa
   // State để lưu dữ liệu từ Drawer
   const [newProduct, setNewProduct] = useState({
     nameProduct: '',
@@ -65,79 +67,7 @@ const ManageProductAdmin = () => {
     imageUrl: '',
   });
 
-  const listProduct = [
-    {
-      _id: '1',
-      imageUrl: 'http://res.cloudinary.com/dr0zxhvs6/image/upload/v1732618523/zdxacmzj0flbezyti43t.jpg',
-      nameProduct: 'Vòng Tay Vàng 18K Sang Trọng',
-      description: 'Vòng tay vàng 18K với thiết kế tinh tế, thích hợp cho các dịp lễ tết, sự kiện sang trọng.',
-      typeProduct: 'Trang sức',
-      gender: 'Nữ',
-      price: 10000000,
-      listSize: [
-        { size: 'S', quantity: 5 },
-        { size: 'M', quantity: 10 },
-        { size: 'L', quantity: 3 },
-      ],
-    },
-    {
-      _id: '2',
-      imageUrl: 'http://res.cloudinary.com/dr0zxhvs6/image/upload/v1732618523/zdxacmzj0flbezyti43t.jpg',
-      nameProduct: 'Vòng Tay Bạc Chạm Khắc',
-      description: 'Vòng tay bạc tinh xảo, thiết kế chạm khắc hoa văn độc đáo, phù hợp cho các bạn yêu thích sự nhẹ nhàng và thanh thoát.',
-      typeProduct: 'Trang sức',
-      gender: 'Nữ',
-      price: 10000000,
-      listSize: [
-        { size: 'M', quantity: 8 },
-        { size: 'L', quantity: 12 },
-        { size: 'XL', quantity: 7 },
-      ],
-    },
-    {
-      _id: '3',
-      imageUrl: 'http://res.cloudinary.com/dr0zxhvs6/image/upload/v1732618523/zdxacmzj0flbezyti43t.jpg',
-      nameProduct: 'Vòng Tay Đính Đá Cầu Vồng',
-      description: 'Vòng tay đính đá cầu vồng với thiết kế bắt mắt, làm nổi bật sự sang trọng và quý phái.',
-      typeProduct: 'Trang sức',
-      gender: 'Nữ',
-      price: 10000000,
-      listSize: [
-        { size: 'S', quantity: 15 },
-        { size: 'M', quantity: 20 },
-        { size: 'L', quantity: 10 },
-      ],
-    },
-    {
-      _id: '4',
-      imageUrl: 'http://res.cloudinary.com/dr0zxhvs6/image/upload/v1732618523/zdxacmzj0flbezyti43t.jpg',
-      nameProduct: 'Vòng Tay Charm Cao Cấp',
-      description: 'Vòng tay charm cao cấp với các phụ kiện charm xinh xắn, tạo nên vẻ đẹp đầy cá tính và lạ mắt.',
-      typeProduct: 'Trang sức',
-      gender: 'Nam',
-      price: 10000000,
-      listSize: [
-        { size: 'M', quantity: 6 },
-        { size: 'L', quantity: 9 },
-        { size: 'XL', quantity: 4 },
-      ],
-    },
-    {
-      _id: '5',
-      imageUrl: 'http://res.cloudinary.com/dr0zxhvs6/image/upload/v1732618523/zdxacmzj0flbezyti43t.jpg',
-      nameProduct: 'Vòng Tay Nam Đơn Giản',
-      description: 'Vòng tay nam với thiết kế đơn giản nhưng sang trọng, thích hợp cho các dịp đi làm hay dạo phố.',
-      typeProduct: 'Trang sức',
-      gender: 'Nam',
-      price: 10000000,
-      listSize: [
-        { size: 'M', quantity: 12 },
-        { size: 'L', quantity: 14 },
-        { size: 'XL', quantity: 5 },
-      ],
-    },
-  ];
-
+  // Hàm xử lý lấy tổng số lượng sản phẩm
   const getProductRemaining = (product) => {
     if (product.listSize.length > 0) {
       let num = 0;
@@ -149,30 +79,63 @@ const ManageProductAdmin = () => {
     }
   };
 
-  // Hàm xử lý button bên trong cột "Tùy chỉnh"
+  const handleDeleteProduct = async (id) => {
+    try {
+      if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+        await deleteProduct(id); // Gọi API xóa sản phẩm
+        console.log("Xóa sản phẩm thành công");
+  
+        // Cập nhật lại danh sách sản phẩm sau khi xóa
+        fetchProducts();
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa sản phẩm:", error);
+    }
+  };
+
   const onClickButtonMoreAction = (product, type) => () => {
-    // Edit
-    if (type == 'edit') {
-      setSelectedProduct(product); // Lưu sản phẩm được chọn (nếu cần sử dụng sau)
+    if (type === 'edit') {
+      setStatusDrawer(2); // Đặt trạng thái là chỉnh sửa
+      setNewProduct({
+        ...product,
+        listSize: product.listSize.reduce((acc, size) => {
+          acc[size.size] = size.quantity;
+          return acc;
+        }, {}),
+        imageFile: null, // Không có file gốc từ server
+      });
       setOpen(true); // Mở Drawer
     }
 
-    // Delete
-    if (type == 'delete') {
-
+    if (type === 'delete') {
+      handleDeleteProduct(product._id)
     }
-  }
+  };
 
-  // Hàm xử lý button thêm mới sản phẩm
+  // Hàm xử lý khi nhấn thêm mới
   const onClickAddNew = () => {
+    setStatusDrawer(1); // 1: Thêm mới
+    setNewProduct({
+      nameProduct: '',
+      description: '',
+      typeProduct: '',
+      gender: '',
+      price: 0,
+      listSize: {
+        M: 0,
+        L: 0,
+        XL: 0,
+      },
+      imageUrl: '',
+    });
     setOpen(true); // Mở Drawer
-  }
+  };
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
 
-    // Nếu đóng Drawer, reset dữ liệu
     if (!newOpen) {
+      setStatusDrawer(null); // Reset trạng thái
       setNewProduct({
         nameProduct: '',
         description: '',
@@ -185,6 +148,7 @@ const ManageProductAdmin = () => {
           XL: 0,
         },
         imageUrl: '',
+        imageFile: null,
       });
     }
   };
@@ -222,7 +186,7 @@ const ManageProductAdmin = () => {
       newErrors.price = "Giá tiền phải lớn hơn 0.";
     }
 
-    if (!newProduct.imageFile) {
+    if (!newProduct.imageUrl) {
       newErrors.imageFile = "Hình ảnh là bắt buộc.";
     }
 
@@ -259,6 +223,50 @@ const ManageProductAdmin = () => {
       console.error("Lỗi khi thêm sản phẩm:", error);
     }
   };
+
+  const handleUpdateProduct = async () => {
+    if (!validateForm()) {
+      return; // Dừng lại nếu form không hợp lệ
+    }
+
+    const formData = new FormData();
+
+    formData.append('nameProduct', newProduct.nameProduct);
+    formData.append('description', newProduct.description);
+    formData.append('typeProduct', newProduct.typeProduct);
+    formData.append('gender', newProduct.gender);
+    formData.append('price', newProduct.price);
+
+    if (newProduct.imageFile) {
+      formData.append('imageFile', newProduct.imageFile);
+    }
+
+    Object.entries(newProduct.listSize).forEach(([size, quantity], index) => {
+      formData.append(`listSize[${index}][size]`, size);
+      formData.append(`listSize[${index}][quantity]`, quantity);
+    });
+
+    try {
+      const response = await updateProduct(newProduct._id, formData); // Gọi API cập nhật sản phẩm
+      toggleDrawer(false)(); // Đóng Drawer
+      fetchProducts();
+    } catch (error) {
+      console.error("Lỗi khi cập nhật sản phẩm:", error);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const products = await getAllProducts();
+      setListProduct(products);
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách sản phẩm:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <div className='manage-product-admin-component'>
@@ -301,7 +309,7 @@ const ManageProductAdmin = () => {
                 <StyledTableCell align='right'>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '14px', justifyContent: 'end', fontSize: '18px' }}>
                     <i style={{ cursor: 'pointer' }} className="fa-solid fa-pencil" onClick={onClickButtonMoreAction(product, 'edit')}></i>
-                    <i style={{ cursor: 'pointer', color: 'red' }} className="fa-solid fa-trash-can"></i>
+                    <i style={{ cursor: 'pointer', color: 'red' }} className="fa-solid fa-trash-can" onClick={onClickButtonMoreAction(product, 'delete')}></i>
                   </div>
                 </StyledTableCell>
               </StyledTableRow>
@@ -330,6 +338,7 @@ const ManageProductAdmin = () => {
             <div className="box-content">
               <div className="text">Mô tả sản phẩm</div>
               <textarea
+                style={{ minHeight: '100px' }}
                 className="input-name"
                 value={newProduct.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
@@ -409,22 +418,44 @@ const ManageProductAdmin = () => {
 
             <div className="box-content">
               <div className="text">Hình ảnh</div>
+              {newProduct.imageUrl && (
+                <img
+                  src={newProduct.imageUrl}
+                  alt="Preview"
+                  style={{ width: '100px', height: '100px', marginBottom: '10px' }}
+                />
+              )}
               <input
                 className="input-size"
                 type="file"
                 style={{ height: 'auto' }}
-                onChange={(e) => handleInputChange('imageFile', e.target.files[0])} // Lưu file vào state
+                onChange={(e) => handleInputChange('imageFile', e.target.files[0])}
               />
               {errors.imageFile && <div className="error-message">{errors.imageFile}</div>}
             </div>
-
           </div>
 
           <div className="footer-drawer">
-            <div className="button-add" style={{ borderRadius: '3px' }} onClick={handleAddNewProduct}>
-              Thêm mới
-            </div>
+            {statusDrawer === 1 && (
+              <div
+                className="button-add"
+                style={{ borderRadius: '3px' }}
+                onClick={handleAddNewProduct}
+              >
+                Thêm mới
+              </div>
+            )}
+            {statusDrawer === 2 && (
+              <div
+                className="button-add"
+                style={{ borderRadius: '3px', backgroundColor: 'blue', color: 'white' }}
+                onClick={handleUpdateProduct}
+              >
+                Cập nhật
+              </div>
+            )}
           </div>
+
         </div>
       </Drawer>
     </div>
