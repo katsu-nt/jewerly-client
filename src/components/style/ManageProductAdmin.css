@@ -1,4 +1,4 @@
-.manage-product-admin-component{
+.manage-product-admin-component {
     padding: 30px 15px 0 15px;
 }
 
@@ -18,25 +18,28 @@
 }
 
 .product-detail-container .content-drawer {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 130px);
     padding: 20px;
-    padding-bottom: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
 }
 
 .product-detail-container .footer-drawer {
-    height: 50px;
+    height: 60px;
     border-top: 1px solid #8a8a8a;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
 }
 
-.group-filter-container{
+.group-filter-container {
     display: flex;
     justify-content: space-between;
 }
 
-.button-add{
+.button-add {
     color: #fff;
     padding: 6px 18px;
     background-color: rgb(0, 87, 7);
@@ -45,14 +48,59 @@
     cursor: pointer;
 }
 
-.box-content{
+.box-content {
     width: 100%;
 }
 
-.input-name{
+.input-name {
     padding: 6px 10px;
     border: 1px solid #a3a3a3;
     width: 100%;
     border-radius: 4px;
     margin-top: 4px;
+    height: 56px;
+}
+
+.dropdown-type,
+.dropdown-gender {
+    width: 100%;
+}
+
+.input-size {
+    padding: 6px 10px;
+    border: 1px solid #a3a3a3;
+    border-radius: 4px;
+    margin-top: 4px;
+    height: 56px;
+    width: 100%;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.input-search{
+    height: 36px;
+    border: 1px solid #a3a3a3;
+    font-size: 14px;
+    min-width: 500px;
+    border-radius: 4px;
+    padding: 0 10px;
+}
+
+.group-filter{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.button-search{
+    color: #fff;
+    padding: 6px 18px;
+    background-color: rgb(0, 87, 7);
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
 }
