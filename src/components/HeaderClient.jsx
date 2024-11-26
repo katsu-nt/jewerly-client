@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import HeaderCategory from './HeaderCategory';
 import './style/HeaderClient.css'
 import logo from '../assets/VLogo_LiLi_Horizontal_Premium-1.svg';
@@ -18,28 +18,30 @@ export default function HeaderClient() {
     const account = JSON.parse(localStorage.getItem('account'));
     const cartCaching = JSON.parse(localStorage.getItem('cart'));
     const [quantityInCart, setQuantityInCart] = useState(0)
-    const { user, cart, setUser, setCart } = useCart()
-
+    const { user, cart, setUser, setCart, isOpen, setIsOpen } = useCart()
+    const navigate = useNavigate();
     useEffect(() => {
-        if (account && !user) {
-          setUser(account);
+        const account = JSON.parse(localStorage.getItem('account'));
+        const cartCaching = JSON.parse(localStorage.getItem('cart'));
+
+        if (account) {
+            setUser(account); // Set lại user từ localStorage
         }
-        if (cartCaching && !cart) {
-          setCart(cartCaching);
+
+        if (cartCaching) {
+            setCart(cartCaching); // Set lại cart từ localStorage
         }
-      }, [account, cartCaching, setUser, setCart]);
-    
-      useEffect(() => {
+    }, [setUser, setCart]);
+
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    useEffect(() => {
         if (cart && cart.items && cart.items.length > 0) {
-          let countQuantity = 0;
-          cart.items.forEach((item) => {
-            countQuantity += item.quantity;
-          });
-          setQuantityInCart(countQuantity);
+            const countQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+            setQuantityInCart(countQuantity);
         } else {
-          setQuantityInCart(0);
+            setQuantityInCart(0);
         }
-      }, [cart]);
+    }, [cart]);
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
         '& .MuiBadge-badge': {
@@ -52,9 +54,7 @@ export default function HeaderClient() {
 
     // Hàm dùng để mở giỏ hàng
     const openCart = () => {
-        if (account) {
-
-        }
+        setIsOpen(!isOpen)
     }
 
     // Hàm dùng để mở quản lý thông tin cá nhân
@@ -72,9 +72,9 @@ export default function HeaderClient() {
                 <div className='group-button'>
                     {account
                         ?
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <IconButton aria-label="cart">
-                                <StyledBadge badgeContent={quantityInCart} color="secondary">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <IconButton aria-label="cart" onClick={openCart}>
+                                <StyledBadge badgeContent={quantityInCart} color="secondary" >
                                     <ShoppingCartIcon />
                                 </StyledBadge>
                             </IconButton>
