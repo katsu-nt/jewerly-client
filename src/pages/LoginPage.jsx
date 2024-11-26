@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/authContext.jsx';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import { Button, TextField } from '@mui/material';
 import { login as SignIn } from "../APIs/MyUserApi.js"
@@ -33,7 +33,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" style={{marginTop: '80px'}}>
       <form>
         <TextField
           label="Email"
@@ -63,6 +63,10 @@ const LoginPage = () => {
         >
           Đăng nhập
         </Button>
+
+        <div style={{textAlign: "center", marginTop: '10px'}}>
+          <Link to='/trang-chu'>Quay lại trang chủ</Link>
+        </div>
       </form>
 
     </Container>
