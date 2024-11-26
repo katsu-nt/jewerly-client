@@ -36,6 +36,14 @@ const AppRoutes = () => {
                 </ProtectedRoute>
               }
             />
+            {/* <Route
+              path="/my-cart"
+              element={
+                <ProtectedRoute allowedRoles={['user']}>
+                  <ClientLayout><h1>hello</h1></ClientLayout>
+                </ProtectedRoute>
+              }
+            /> */}
 
             <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
 
