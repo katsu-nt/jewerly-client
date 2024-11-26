@@ -8,6 +8,8 @@ import ClientLayout from './layouts/ClientLayout.jsx';
 import AdminLayout from "./layouts/AdminLayout.jsx"
 import HomePage from './pages/HomePage.jsx';
 import ListProduct from './components/ListProduct.jsx';
+import ManageOrderAdmin from './components/ManageOrderAdmin.jsx';
+import ManageProductAdmin from './components/ManageProductAdmin.jsx';
 
 const AppRoutes = () => {
   return (
@@ -20,7 +22,7 @@ const AppRoutes = () => {
             path="/admin"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout><HomePage /></AdminLayout>
+                <AdminLayout><ManageOrderAdmin /></AdminLayout>
               </ProtectedRoute>
             }
           />
@@ -40,12 +42,27 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/vong-lac"
-            element={
-              <ClientLayout><ListProduct /></ClientLayout>
-            }
-          />
+
+          <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
+
+          <Route path="/vong-lac" element={<ClientLayout><ListProduct /></ClientLayout>} />
+
+          <Route path="/quan-tri-danh-sach-san-pham" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminLayout>
+                <ManageProductAdmin />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/quan-tri-don-hang" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminLayout>
+                <ManageOrderAdmin />
+              </AdminLayout>
+            </ProtectedRoute>
+          } />
+
           <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
         </Routes>
       </Router>

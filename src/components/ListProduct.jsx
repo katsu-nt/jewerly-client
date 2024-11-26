@@ -7,6 +7,7 @@ const ListProduct = () => {
   const currentCate = JSON.parse(localStorage.getItem('category'));
   const listProduct = [
     {
+      id: '1',
       thumbnail: 'vong-tay-1.jpg',
       nameProduct: 'Vòng Tay Vàng 18K Sang Trọng',
       description: 'Vòng tay vàng 18K với thiết kế tinh tế, thích hợp cho các dịp lễ tết, sự kiện sang trọng.',
@@ -20,6 +21,7 @@ const ListProduct = () => {
       ],
     },
     {
+      id: '2',
       thumbnail: 'vong-tay-2.jpg',
       nameProduct: 'Vòng Tay Bạc Chạm Khắc',
       description: 'Vòng tay bạc tinh xảo, thiết kế chạm khắc hoa văn độc đáo, phù hợp cho các bạn yêu thích sự nhẹ nhàng và thanh thoát.',
@@ -33,6 +35,7 @@ const ListProduct = () => {
       ],
     },
     {
+      id: '3',
       thumbnail: 'vong-tay-3.jpg',
       nameProduct: 'Vòng Tay Đính Đá Cầu Vồng',
       description: 'Vòng tay đính đá cầu vồng với thiết kế bắt mắt, làm nổi bật sự sang trọng và quý phái.',
@@ -46,6 +49,7 @@ const ListProduct = () => {
       ],
     },
     {
+      id: '4',
       thumbnail: 'vong-tay-4.jpg',
       nameProduct: 'Vòng Tay Charm Cao Cấp',
       description: 'Vòng tay charm cao cấp với các phụ kiện charm xinh xắn, tạo nên vẻ đẹp đầy cá tính và lạ mắt.',
@@ -59,6 +63,7 @@ const ListProduct = () => {
       ],
     },
     {
+      id: '5',
       thumbnail: 'vong-tay-5.jpg',
       nameProduct: 'Vòng Tay Nam Đơn Giản',
       description: 'Vòng tay nam với thiết kế đơn giản nhưng sang trọng, thích hợp cho các dịp đi làm hay dạo phố.',
