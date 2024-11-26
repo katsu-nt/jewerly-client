@@ -12,7 +12,8 @@ const ItemProduct = ({ pros }) => {
 
             <div className="block-information">
                 <h3 className="product-name">{pros.nameProduct}</h3>
-                <div className="price">{pros.price}</div>
+                <span className='price'>{pros.price.toLocaleString('vi-VN')}
+                <span style={{ textDecoration: 'underline' }}>đ</span></span>
             </div>
         </div>
     );
