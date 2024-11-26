@@ -11,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { MenuItem, Select } from '@mui/material';
+import { insertProduct } from '../APIs/MyProductApi';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,10 +49,21 @@ const listCategories = [
 const ManageProductAdmin = () => {
   const [open, setOpen] = React.useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
+  const [errors, setErrors] = useState({});
+  // State để lưu dữ liệu từ Drawer
+  const [newProduct, setNewProduct] = useState({
+    nameProduct: '',
+    description: '',
+    typeProduct: '',
+    gender: '',
+    price: 0,
+    listSize: {
+      M: 0,
+      L: 0,
+      XL: 0,
+    },
+    imageUrl: '',
+  });
 
   const listProduct = [
     {
@@ -156,6 +168,98 @@ const ManageProductAdmin = () => {
     setOpen(true); // Mở Drawer
   }
 
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+
+    // Nếu đóng Drawer, reset dữ liệu
+    if (!newOpen) {
+      setNewProduct({
+        nameProduct: '',
+        description: '',
+        typeProduct: '',
+        gender: '',
+        price: 0,
+        listSize: {
+          M: 0,
+          L: 0,
+          XL: 0,
+        },
+        imageUrl: '',
+      });
+    }
+  };
+
+  // Hàm cập nhật state từ các input
+  const handleInputChange = (field, value) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSizeChange = (size, value) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      listSize: {
+        ...prev.listSize,
+        [size]: value,
+      },
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!newProduct.nameProduct.trim()) {
+      newErrors.nameProduct = "Tên sản phẩm là bắt buộc.";
+    }
+
+    if (!newProduct.typeProduct.trim()) {
+      newErrors.typeProduct = "Loại sản phẩm là bắt buộc.";
+    }
+
+    if (!newProduct.price || isNaN(newProduct.price) || newProduct.price <= 0) {
+      newErrors.price = "Giá tiền phải lớn hơn 0.";
+    }
+
+    if (!newProduct.imageFile) {
+      newErrors.imageFile = "Hình ảnh là bắt buộc.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
+  };
+
+  const handleAddNewProduct = async () => {
+    if (!validateForm()) {
+      return; // Dừng lại nếu không hợp lệ
+    }
+
+    const formData = new FormData();
+
+    formData.append('nameProduct', newProduct.nameProduct);
+    formData.append('description', newProduct.description);
+    formData.append('typeProduct', newProduct.typeProduct);
+    formData.append('gender', newProduct.gender);
+    formData.append('price', newProduct.price);
+    formData.append('imageFile', newProduct.imageFile);
+
+    Object.entries(newProduct.listSize).forEach(([size, quantity], index) => {
+      formData.append(`listSize[${index}][size]`, size);
+      formData.append(`listSize[${index}][quantity]`, quantity);
+    });
+
+    try {
+      const response = await insertProduct(formData);
+      console.log("Phản hồi từ server:", response);
+
+      // Đóng Drawer nếu thêm thành công
+      toggleDrawer(false)();
+    } catch (error) {
+      console.error("Lỗi khi thêm sản phẩm:", error);
+    }
+  };
+
   return (
     <div className='manage-product-admin-component'>
       {/* FILTER */}
@@ -207,71 +311,120 @@ const ManageProductAdmin = () => {
       </TableContainer>
 
       {/* DRAWER */}
-      <Button onClick={toggleDrawer(true)}>Open drawer</Button>
-      <Drawer open={open} anchor='right' className='drawer-product-detail' onClose={toggleDrawer(false)}>
-        <div className='product-detail-container'>
-          <div className="header-drawer">
-            Chi tiết sản phẩm
-          </div>
+      <Drawer open={open} anchor="right" className="drawer-product-detail" onClose={toggleDrawer(false)}>
+        <div className="product-detail-container">
+          <div className="header-drawer">Chi tiết sản phẩm</div>
 
           <div className="content-drawer">
             <div className="box-content">
               <div className="text">Tên sản phẩm</div>
-              <input className='input-name' type="text" />
+              <input
+                className="input-name"
+                type="text"
+                value={newProduct.nameProduct}
+                onChange={(e) => handleInputChange('nameProduct', e.target.value)}
+              />
+              {errors.nameProduct && <div className="error-message">{errors.nameProduct}</div>}
             </div>
 
             <div className="box-content">
               <div className="text">Mô tả sản phẩm</div>
-              <textarea className='input-name' type="text" />
+              <textarea
+                className="input-name"
+                value={newProduct.description}
+                onChange={(e) => handleInputChange('description', e.target.value)}
+              />
             </div>
 
             <div className="box-content">
               <div className="text">Loại sản phẩm</div>
               <Select
                 labelId="demo-select-size-label"
-                label="Loại sản phẩm"
-                className='dropdown-type'
+                value={newProduct.typeProduct}
+                onChange={(e) => handleInputChange('typeProduct', e.target.value)}
+                className="dropdown-type"
               >
                 {listCategories.map((cate) => (
-                  <MenuItem key={cate.id} value={cate.id}>{cate.name}</MenuItem>
+                  <MenuItem key={cate.id} value={cate.name}>
+                    {cate.name}
+                  </MenuItem>
                 ))}
               </Select>
+              {errors.typeProduct && <div className="error-message">{errors.typeProduct}</div>}
             </div>
 
             <div className="box-content">
               <div className="text">Giới tính</div>
               <Select
                 labelId="demo-select-gender-label"
-                label="Giới tính"
-                className='dropdown-gender'
+                value={newProduct.gender}
+                onChange={(e) => handleInputChange('gender', e.target.value)}
+                className="dropdown-gender"
               >
-                <MenuItem value={1}>Nam</MenuItem>
-                <MenuItem value={2}>Nữ</MenuItem>
+                <MenuItem value="Nam">Nam</MenuItem>
+                <MenuItem value="Nữ">Nữ</MenuItem>
               </Select>
             </div>
 
             <div className="box-content">
               <div className="text">Giá tiền</div>
-              <input className='input-name' type="text" />
+              <input
+                className="input-name"
+                type="number"
+                value={newProduct.price}
+                onChange={(e) => handleInputChange('price', e.target.value)}
+              />
+              {errors.price && <div className="error-message">{errors.price}</div>}
             </div>
 
-            <div className="box">
-              <div className="text">Size M</div>
-              <input className='input-size' type="text" />
+            <div className="box-content">
+              <div className="text">Số lượng size M</div>
+              <input
+                className="input-size"
+                type="number"
+                value={newProduct.listSize.M}
+                onChange={(e) => handleSizeChange('M', e.target.value)}
+              />
             </div>
 
-            <div className="box">
-              <div className="text">Size L</div>
-              <input className='input-size' type="text" />
+            <div className="box-content">
+              <div className="text">Số lượng size L</div>
+              <input
+                className="input-size"
+                type="number"
+                value={newProduct.listSize.L}
+                onChange={(e) => handleSizeChange('L', e.target.value)}
+              />
             </div>
 
-            <div className="box">
-              <div className="text">Size XL</div>
-              <input className='input-size' type="text" />
+            <div className="box-content">
+              <div className="text">Số lượng size XL</div>
+              <input
+                className="input-size"
+                type="number"
+                value={newProduct.listSize.XL}
+                onChange={(e) => handleSizeChange('XL', e.target.value)}
+              />
             </div>
+
+            <div className="box-content">
+              <div className="text">Hình ảnh</div>
+              <input
+                className="input-size"
+                type="file"
+                style={{ height: 'auto' }}
+                onChange={(e) => handleInputChange('imageFile', e.target.files[0])} // Lưu file vào state
+              />
+              {errors.imageFile && <div className="error-message">{errors.imageFile}</div>}
+            </div>
+
           </div>
 
-          <div className="footer-drawer"></div>
+          <div className="footer-drawer">
+            <div className="button-add" style={{ borderRadius: '3px' }} onClick={handleAddNewProduct}>
+              Thêm mới
+            </div>
+          </div>
         </div>
       </Drawer>
     </div>
