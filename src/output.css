@@ -596,6 +596,10 @@ video {
   display: flex;
 }
 
+.hidden {
+  display: none;
+}
+
 .uppercase {
   text-transform: uppercase;
 }

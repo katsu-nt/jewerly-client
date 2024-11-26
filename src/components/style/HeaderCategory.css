@@ -1,9 +1,10 @@
 .category-item{
     color: #000;
     text-wrap: nowrap;
+    transition: all 0.5s ease;
 }
 
 .category-item:hover{
     color: #c60018;
-    transition: 0.5s;
+    transition: all 0.5s ease;
 }
