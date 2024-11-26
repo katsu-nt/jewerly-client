@@ -5,7 +5,7 @@ export default function ClientLayout({ children }) {
   return (
     <div>
       <HeaderClient></HeaderClient>
-      <div style={{ marginTop: '30px' }}>
+      <div style={{ height: 'calc(100vh - 136px)', overflowY: 'auto', overflowX: 'hidden' }}>
         {children}
       </div>
     </div>
