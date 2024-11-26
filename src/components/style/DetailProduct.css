@@ -108,6 +108,7 @@
     padding: 10px 0px;
     padding-bottom: 20px;
     border-bottom: 1px solid #cbcbcb;
+    box-sizing: content-box !important;
 }
 
 .block-size .text-size{
@@ -184,7 +185,7 @@
     display: flex;
     gap: 30px;
     padding: 10px 0px;
-    height: calc(100% - 295px);
+    /* height: calc(100% - 295px); */
 }
 
 .box-choose-quantity{
