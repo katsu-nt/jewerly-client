@@ -83,8 +83,8 @@
     text-overflow: ellipsis;
     word-wrap: break-word; /* Ngắt từ nếu quá dài */
     line-height: 1.5;
-    max-height: calc(1.5em * 5); /* Đảm bảo chiều cao không vượt quá 3 dòng (dựa trên line-height) */
-    height: calc(1.5em * 6);
+    max-height: calc(1.5em * 5); /* Đảm bảo chiều cao không vượt quá 5 dòng (dựa trên line-height) */
+    height: calc(1.5em * 5);
     font-weight: 100;
 }
 
