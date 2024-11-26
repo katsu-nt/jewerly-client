@@ -25,7 +25,15 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/user"
+            path="/history"
+            element={
+              <ProtectedRoute allowedRoles={['user']}>
+                <ClientLayout><HomePage /></ClientLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cart"
             element={
               <ProtectedRoute allowedRoles={['user']}>
                 <ClientLayout><HomePage /></ClientLayout>
