@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style/ListProduct.css';
 import GroupFilterListProduct from './GroupFilterListProduct';
 import ItemProduct from './ItemProduct';
+import { getProductByFilter } from "../APIs/MyProductApi";
 
 const ListProduct = () => {
   const currentCate = JSON.parse(localStorage.getItem('category'));
+  const [listProductByCate, setListProductByCate] = useState(
+    JSON.parse(localStorage.getItem('listProductByFilter')) || []
+  );   
+  // console.log(listProductByCate)
   const listProduct = [
     {
       id: '1',
@@ -79,27 +84,71 @@ const ListProduct = () => {
   ];
 
   // Hàm nhận dữ liệu từ component con
-  const handleFilterChange = (updatedValues) => {
+  const handleFilterChange = async (updatedValues) => {
     console.log(updatedValues);
+    let valueGender = '';
+    let valueMin = 0;
+    let valueMax = 0;
+    if (updatedValues.gender !== 0 && updatedValues.gender !== "") {
+      if (updatedValues.gender == 1) {
+        valueGender = 'Nam';
+      } else {
+        valueGender = 'Nữ';
+      }
+    } else {
+      valueGender = null;
+    }
+
+    if (updatedValues.rangePrice !== 0 && updatedValues.rangePrice !== "") {
+      if (updatedValues.rangePrice == 1) {
+        valueMin = null;
+        valueMax = 1500000;
+
+      } else if (updatedValues.rangePrice == 2) {
+        valueMin = 1500000;
+        valueMax = 3000000;
+      } else if (updatedValues.rangePrice == 3) {
+        valueMin = 3000000;
+        valueMax = 5000000;
+      } else if (updatedValues.rangePrice == 4) {
+        valueMin = 5000000;
+        valueMax = null;
+      } else {
+        valueMin = null;
+        valueMax = null;
+      }
+    }
+
+      const filters = {
+        typeProduct: currentCate.name,
+        gender: valueGender,
+        minPrice: valueMin,
+        maxPrice: valueMax,
+        nameProduct: updatedValues.valueSearch,
+      };
+
+      const products = await getProductByFilter(filters);
+      setListProductByCate(products);
+
+    };
+
+    return (
+      <div className='cate-container'>
+        <div className="title-cate">
+          <span className='title-line'></span>
+          <span className='title-name'>{currentCate?.name}</span>
+          <span className='title-line'></span>
+        </div>
+
+        <GroupFilterListProduct onFilterChange={handleFilterChange} />
+
+        <div className="list-product-container">
+          {listProductByCate.map((product, index) => (
+            <ItemProduct key={index} pros={product} />
+          ))}
+        </div>
+      </div>
+    );
   };
 
-  return (
-    <div className='cate-container'>
-      <div className="title-cate">
-        <span className='title-line'></span>
-        <span className='title-name'>{currentCate?.name}</span>
-        <span className='title-line'></span>
-      </div>
-
-      <GroupFilterListProduct onFilterChange={handleFilterChange} />
-
-      <div className="list-product-container">
-        {listProduct.map((product, index) => (
-          <ItemProduct key={index} pros={product} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default ListProduct;
+  export default ListProduct;

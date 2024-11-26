@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style/HeaderCategory.css';
+import { getProductByFilter } from "../APIs/MyProductApi";
 
 // Mock data cho các category
 const listCategories = [
@@ -26,10 +27,16 @@ const HeaderCategory = () => {
     setCategories(listCategories);
   }, []);
 
-  // Hàm được thực hiện khi chọn 1 category
-  const onClickCategory = (cate) => {
-    navigate(cate.link);
+  const onClickCategory = async (cate) => {
     localStorage.setItem('category', JSON.stringify(cate));
+
+    const filters = { typeProduct: cate.name }; 
+
+    const products = await getProductByFilter(filters);    
+    // console.log(products)
+    localStorage.setItem('listProductByFilter', JSON.stringify(products));
+    navigate(cate.link);
+
   }
 
   return (

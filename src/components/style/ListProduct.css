@@ -43,12 +43,12 @@
 }
 
 #select-gender {
-    grid-column: span 2; /* Chiếm 2 phần */
+    grid-column: span 3; /* Chiếm 2 phần */
     margin: 0;
 }
 
 #select-range {
-    grid-column: span 3; /* Chiếm 3 phần */
+    grid-column: span 4; /* Chiếm 3 phần */
     margin: 0;
 }
 

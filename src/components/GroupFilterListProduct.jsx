@@ -3,7 +3,6 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const GroupFilterListProduct = ({ onFilterChange }) => {
     const [valueFilter, setValueFilter] = useState({
-        size: '',
         gender: '',
         rangePrice: '',
         valueSearch: '',
@@ -30,22 +29,7 @@ const GroupFilterListProduct = ({ onFilterChange }) => {
     };
 
     return (
-        <div className="filter-product-container" style={{marginTop: '30px'}}>
-            {/* Kích thước */}
-            <FormControl sx={{ m: 1 }} id="select-size" size="small">
-                <InputLabel id="demo-select-size-label" style={{ color: '#000' }}>Kích thước</InputLabel>
-                <Select
-                    labelId="demo-select-size-label"
-                    value={valueFilter.size}
-                    label="Kích thước"
-                    onChange={(e) => handleValueChange(e, 'size')}  // Truyền đúng key vào đây
-                >
-                    <MenuItem value={'M'}>Size M</MenuItem>
-                    <MenuItem value={'L'}>Size L</MenuItem>
-                    <MenuItem value={'XL'}>Size XL</MenuItem>
-                </Select>
-            </FormControl>
-
+        <div className="filter-product-container" style={{ marginTop: '30px' }}>
             {/* Giới tính */}
             <FormControl sx={{ m: 1 }} id="select-gender" size="small">
                 <InputLabel id="demo-select-gender-label" style={{ color: '#000' }}>Giới tính</InputLabel>
@@ -55,6 +39,7 @@ const GroupFilterListProduct = ({ onFilterChange }) => {
                     label="Giới tính"
                     onChange={(e) => handleValueChange(e, 'gender')}  // Truyền đúng key vào đây
                 >
+                    <MenuItem value={0}>-- Chọn --</MenuItem>
                     <MenuItem value={1}>Nam</MenuItem>
                     <MenuItem value={2}>Nữ</MenuItem>
                 </Select>
@@ -69,6 +54,7 @@ const GroupFilterListProduct = ({ onFilterChange }) => {
                     label="Khoảng giá"
                     onChange={(e) => handleValueChange(e, 'rangePrice')}  // Truyền đúng key vào đây
                 >
+                    <MenuItem value={0}>-- Chọn --</MenuItem>
                     <MenuItem value={1}>Dưới 1.500.000</MenuItem>
                     <MenuItem value={2}>1.500.000 - 3.000.000</MenuItem>
                     <MenuItem value={3}>3.000.000 - 5.000.000</MenuItem>
@@ -81,9 +67,14 @@ const GroupFilterListProduct = ({ onFilterChange }) => {
                 id="text-search"
                 type="text"
                 value={valueFilter.valueSearch}
-                onChange={(e) => handleValueChange(e, 'valueSearch')}  // Truyền đúng key vào đây
-                placeholder="Tìm theo từ khóa..."
+                onChange={(e) => setValueFilter((prev) => ({ ...prev, valueSearch: e.target.value }))} 
+                onBlur={(e) => handleValueChange(e, 'valueSearch')} 
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleValueChange(e, 'valueSearch'); 
+                }}
+                placeholder="Tìm theo tên sản phẩm..."
             />
+
         </div>
     );
 };
