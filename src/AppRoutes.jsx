@@ -11,66 +11,68 @@ import ListProduct from './components/ListProduct.jsx';
 import DetailProduct from './components/DetailProduct.jsx';
 import ManageOrderAdmin from './components/ManageOrderAdmin.jsx';
 import ManageProductAdmin from './components/ManageProductAdmin.jsx';
-
+import { CartProvider } from './context/cartContext.jsx';
 const AppRoutes = () => {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/trang-chu" element={<ClientLayout><HomePage /></ClientLayout>} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/admin"
-            element={
+      <CartProvider>
+        <Router>
+          <Routes>
+            <Route path="/trang-chu" element={<ClientLayout><HomePage /></ClientLayout>} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminLayout><ManageOrderAdmin /></AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute allowedRoles={['user']}>
+                  <ClientLayout><HomePage /></ClientLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
+
+            <Route path="/vong-lac" element={<ClientLayout><ListProduct /></ClientLayout>} />
+
+            <Route path="/quan-tri-danh-sach-san-pham" element={
               <ProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout><ManageOrderAdmin /></AdminLayout>
+                <AdminLayout>
+                  <ManageProductAdmin />
+                </AdminLayout>
               </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/history"
-            element={
-              <ProtectedRoute allowedRoles={['user']}>
-                <ClientLayout><HomePage /></ClientLayout>
+            } />
+
+            <Route path="/quan-tri-don-hang" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminLayout>
+                  <ManageOrderAdmin />
+                </AdminLayout>
               </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <ClientLayout><ListProduct /></ClientLayout>
-            }
-          />
-          <Route
-            path="/vong-lac/detail"
-            element={
-              <ClientLayout><DetailProduct /></ClientLayout>
-            }
-          />
+            } />
+            <Route
+              path="/cart"
+              element={
+                <ClientLayout><ListProduct /></ClientLayout>
+              }
+            />
+            <Route
+              path="/vong-lac/detail"
+              element={
+                <ClientLayout><DetailProduct /></ClientLayout>
+              }
+            />
 
-          <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
-
-          <Route path="/vong-lac" element={<ClientLayout><ListProduct /></ClientLayout>} />
-
-          <Route path="/quan-tri-danh-sach-san-pham" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminLayout>
-                <ManageProductAdmin />
-              </AdminLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="/quan-tri-don-hang" element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminLayout>
-                <ManageOrderAdmin />
-              </AdminLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
-        </Routes>
-      </Router>
+            <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
+          </Routes>
+        </Router>
+      </CartProvider>
     </AuthProvider>
   );
 };
