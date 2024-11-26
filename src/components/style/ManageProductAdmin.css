@@ -1,0 +1,58 @@
+.manage-product-admin-component{
+    padding: 30px 15px 0 15px;
+}
+
+.product-detail-container {
+    min-width: 400px;
+}
+
+.product-detail-container .header-drawer {
+    height: 70px;
+    border-bottom: 1px solid #8a8a8a;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    text-transform: uppercase;
+    font-weight: 500;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.product-detail-container .content-drawer {
+    height: calc(100vh - 120px);
+    padding: 20px;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-detail-container .footer-drawer {
+    height: 50px;
+    border-top: 1px solid #8a8a8a;
+}
+
+.group-filter-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-add{
+    color: #fff;
+    padding: 6px 18px;
+    background-color: rgb(0, 87, 7);
+    display: inline-block;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+.box-content{
+    width: 100%;
+}
+
+.input-name{
+    padding: 6px 10px;
+    border: 1px solid #a3a3a3;
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 4px;
+}

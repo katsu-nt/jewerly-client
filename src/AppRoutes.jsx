@@ -47,11 +47,6 @@ const AppRoutes = () => {
               <ClientLayout><DetailProduct /></ClientLayout>
             }
           />
-              <ProtectedRoute allowedRoles={['user']}>
-                <ClientLayout><HomePage /></ClientLayout>
-              </ProtectedRoute>
-            }
-          />
 
           <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
 
