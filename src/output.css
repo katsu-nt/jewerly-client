@@ -554,37 +554,8 @@ video {
   display: none;
 }
 
-.static {
-  position: static;
-}
-
 .flex {
   display: flex;
-}
-
-.border-l-0 {
-  border-left-width: 0px;
-}
-
-.border-l-2 {
-  border-left-width: 2px;
-}
-
-.border-l-4 {
-  border-left-width: 4px;
-}
-
-.border-solid {
-  border-style: solid;
-}
-
-.border-black {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
-}
-
-.font-normal {
-  font-weight: 400;
 }
 
 .uppercase {

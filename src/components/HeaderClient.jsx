@@ -49,8 +49,7 @@ export default function HeaderClient() {
             </div>
 
             <br />
-            {/* Kiểm tra role và hiển thị HeaderCategory */}
-            {role === 'user' && <HeaderCategory />}
+            <HeaderCategory />
         </div>
     );
 }

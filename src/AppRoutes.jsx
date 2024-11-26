@@ -1,6 +1,6 @@
 // App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/authContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginPage from './pages/LoginPage.jsx';
@@ -14,13 +14,13 @@ const AppRoutes = () => {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/trang-chu" element={<ClientLayout><HomePage/></ClientLayout>} />
-          <Route path="/login" element={<ClientLayout><LoginPage/></ClientLayout>} />
+          <Route path="/trang-chu" element={<ClientLayout><HomePage /></ClientLayout>} />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/admin"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout><HomePage/></AdminLayout>
+                <AdminLayout><HomePage /></AdminLayout>
               </ProtectedRoute>
             }
           />
@@ -28,16 +28,14 @@ const AppRoutes = () => {
             path="/user"
             element={
               <ProtectedRoute allowedRoles={['user']}>
-               <ClientLayout><HomePage/></ClientLayout>
+                <ClientLayout><HomePage /></ClientLayout>
               </ProtectedRoute>
             }
           />
           <Route
             path="/vong-lac"
             element={
-              <ProtectedRoute allowedRoles={['user']}>
-               <ClientLayout><ListProduct/></ClientLayout>
-              </ProtectedRoute>
+              <ClientLayout><ListProduct /></ClientLayout>
             }
           />
           <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
