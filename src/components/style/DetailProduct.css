@@ -83,8 +83,8 @@
     text-overflow: ellipsis;
     word-wrap: break-word; /* Ngắt từ nếu quá dài */
     line-height: 1.5;
-    max-height: calc(1.5em * 5); /* Đảm bảo chiều cao không vượt quá 3 dòng (dựa trên line-height) */
-    height: calc(1.5em * 6);
+    max-height: calc(1.5em * 5); /* Đảm bảo chiều cao không vượt quá 5 dòng (dựa trên line-height) */
+    height: calc(1.5em * 5);
     font-weight: 100;
 }
 
@@ -108,6 +108,7 @@
     padding: 10px 0px;
     padding-bottom: 20px;
     border-bottom: 1px solid #cbcbcb;
+    box-sizing: content-box !important;
 }
 
 .block-size .text-size{
@@ -184,7 +185,7 @@
     display: flex;
     gap: 30px;
     padding: 10px 0px;
-    height: calc(100% - 295px);
+    /* height: calc(100% - 295px); */
 }
 
 .box-choose-quantity{

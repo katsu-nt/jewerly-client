@@ -38,7 +38,8 @@ export default function DetailProduct() {
 
   useEffect(() => {
     setlistBreadCrum(mocListBreadCrum);
-    setItemProduct(mockItemProduct);
+    setItemProduct(JSON.parse(localStorage.getItem('current-product'))
+  );
   }, []);
 
   const onClickCategory = (cate) => {
@@ -90,7 +91,7 @@ export default function DetailProduct() {
         {itemProduct && (
           <div className='block-info-detail'>
             <div className='block-images'>
-              <img src={itemProduct.thumbnail} alt={itemProduct.nameProduct}></img>
+              <img src={itemProduct.imageUrl} alt={itemProduct.nameProduct}></img>
             </div>
             <div className='block-info'>
               <div className='block-name'>
@@ -125,11 +126,11 @@ export default function DetailProduct() {
                 <div className='block-add-cart'>
                   <div className='box-choose-quantity'>
                     <button className='btn-decrease' onClick={decrease}>
-                      <i class="fa-solid fa-minus"></i>
+                      <i className="fa-solid fa-minus"></i>
                     </button>
                     <span >{count}</span>
                     <button className='btn-increase' onClick={increase}>
-                      <i class="fa-solid fa-plus"></i>
+                      <i className="fa-solid fa-plus"></i>
                     </button>
                   </div>
 
