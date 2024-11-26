@@ -1,0 +1,228 @@
+.detail-page {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.box-detail-product {
+    width: 1420px;
+}
+
+.list-breadcrum {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.fa-house {
+    color: rgb(92, 92, 92);
+}
+
+.box-breadcrum {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.box-breadcrum .fa-chevron-right {
+    font-size: 11px;
+}
+
+.item-breadcrum {
+    font-size: 16px;
+}
+
+.block-info-detail {
+    display: flex;
+    gap: 10px;
+    border-radius: 15px;
+    border: 1px solid #e1dede;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.block-images {
+    padding: 20px;
+    border-right: 1px solid #e1dede;
+}
+
+.block-images img {
+    width: 500px;
+    height: 500px;
+    border-radius: 15px;
+}
+
+.block-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: calc(100% - 500px);
+    padding: 20px;
+}
+
+.block-name {
+    padding-bottom: 10px;
+    border-bottom: 1px solid gray;
+}
+
+.block-name .name-product {
+    color: #000;
+    font-family: "Open Sans", Sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+    line-height: 1.2em;
+}
+
+.block-description .description-product {
+    display: -webkit-box; /* Sử dụng flexbox để cắt dòng */
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical; /* Định hướng theo chiều dọc */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word; /* Ngắt từ nếu quá dài */
+    line-height: 1.5;
+    max-height: calc(1.5em * 5); /* Đảm bảo chiều cao không vượt quá 3 dòng (dựa trên line-height) */
+    height: calc(1.5em * 6);
+    font-weight: 100;
+}
+
+.block-price{
+    padding: 10px 0px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+.block-price .price-product{
+    color: #e41414;
+    font-family: "Open Sans", Sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.block-size{
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 10px 0px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+.block-size .text-size{
+    width: 130px;
+    position: relative;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.block-size-item{
+    height: 40px;
+    display: flex;
+    gap: 10px;
+    padding-right: 40px;
+}
+
+.size-item{
+    height: 100%;
+    width: 40px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 700;
+}
+
+.size-item:hover{
+    background-color: rgb(5, 117, 5);
+    color: white;
+}
+
+.size-item.active {
+    background-color: rgb(5, 117, 5);; 
+    color: white;
+    border-color: rgb(5, 117, 5);;
+}
+
+.quantity{
+    font-weight: 500;
+}
+
+.btn-decrease{
+    height: 100%;
+    width: 35px;
+    border: 1px solid #686a6b;
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+}
+
+.btn-increase{
+    height: 100%;
+    width: 35px;
+    border: 1px solid #686a6b;
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+}
+
+.btn-decrease:hover{
+    filter: brightness(95%);
+}
+
+.btn-increase:hover{
+    filter: brightness(95%);
+}
+
+.fa-minus{
+    color: gray;
+}
+
+.block-add-cart{
+    display: flex;
+    gap: 30px;
+    padding: 10px 0px;
+    height: calc(100% - 295px);
+}
+
+.box-choose-quantity{
+    height: 50px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 120px;
+}
+
+.btn-add-to-cart{
+    width: 245px;
+    padding: 0px 10px;
+    background-color: #c60018;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-size: 15px;
+    height: 50px;
+}
+
+.btn-call{
+    width: 245px;
+    padding: 0px 10px;
+    background-color: white;
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 3px;
+    height: 50px;
+}
+
+.btn-add-to-cart:hover,
+.btn-call:hover{
+    filter: brightness(95%);
+}
+

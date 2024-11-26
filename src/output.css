@@ -554,6 +554,10 @@ video {
   display: none;
 }
 
+.box-content {
+  box-sizing: content-box;
+}
+
 .flex {
   display: flex;
 }
@@ -568,6 +572,10 @@ video {
 
 .uppercase {
   text-transform: uppercase;
+}
+
+.underline {
+  text-decoration-line: underline;
 }
 
 *,body{

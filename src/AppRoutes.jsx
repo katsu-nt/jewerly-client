@@ -8,6 +8,7 @@ import ClientLayout from './layouts/ClientLayout.jsx';
 import AdminLayout from "./layouts/AdminLayout.jsx"
 import HomePage from './pages/HomePage.jsx';
 import ListProduct from './components/ListProduct.jsx';
+import DetailProduct from './components/DetailProduct.jsx';
 import ManageOrderAdmin from './components/ManageOrderAdmin.jsx';
 import ManageProductAdmin from './components/ManageProductAdmin.jsx';
 import { CartProvider } from './context/cartContext.jsx';
@@ -35,14 +36,6 @@ const AppRoutes = () => {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/cart"
-              element={
-                <ProtectedRoute allowedRoles={['user']}>
-                  <ClientLayout><HomePage /></ClientLayout>
-                </ProtectedRoute>
-              }
-            />
 
             <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
 
@@ -63,6 +56,18 @@ const AppRoutes = () => {
                 </AdminLayout>
               </ProtectedRoute>
             } />
+            <Route
+              path="/cart"
+              element={
+                <ClientLayout><ListProduct /></ClientLayout>
+              }
+            />
+            <Route
+              path="/vong-lac/detail"
+              element={
+                <ClientLayout><DetailProduct /></ClientLayout>
+              }
+            />
 
             <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
           </Routes>
