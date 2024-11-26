@@ -14,35 +14,32 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && cart) {
-      // Only navigate when both user and cart are set
-      if (user.role === 'user') {
-        navigate('/');
-      } else if (user.role === 'admin') {
-        navigate('/admin');
-      }
+    // If no user in localStorage, navigate to login page
+    if (!user) {
+      navigate('/login');
     }
-  }, [user, cart, navigate]); // Watch user and cart changes
+  }, [user, navigate]);
 
   const handleLogin = async () => {
     const userRes = await SignIn({ email, password });
-
     if (!userRes) {
-      setEmail('');
-      setPassword('');
+      setEmail("");
+      setPassword("");
     } else {
-      // Set user data
-      setUser(userRes);
       login(userRes.role);
-
-      // Fetch the cart for the user and set the cart state
-      const cartData = await getCart(userRes._id);
-      setCart(cartData);
-      localStorage.setItem('cart', JSON.stringify(cartData));
-
-      // Hide password before storing in localStorage
-      const dataUser = { ...userRes, password: '********' };
+      setUser(userRes);
+      if (userRes.role === "user") {
+        navigate('/');
+      }
+      if (userRes.role === "admin") {
+        navigate('/admin');
+      }
+      
+      // Store user without password
+      let dataUser = { ...userRes, password: '********' };
       localStorage.setItem('account', JSON.stringify(dataUser));
+      setCart(await getCart(userRes._id));
+      localStorage.setItem('cart', JSON.stringify(await getCart(userRes._id)));
     }
   };
 
