@@ -22,25 +22,24 @@ export default function HeaderClient() {
 
     useEffect(() => {
         if (account && !user) {
-            setUser(account);
+          setUser(account);
         }
         if (cartCaching && !cart) {
-            setCart(cartCaching);
+          setCart(cartCaching);
         }
-    }, [user, cart, setUser, setCart]);  // Ensure we don't update if user or cart is already set
-
-    useEffect(() => {
-        // Update quantityInCart based on cart state
+      }, [account, cartCaching, setUser, setCart]);
+    
+      useEffect(() => {
         if (cart && cart.items && cart.items.length > 0) {
-            let countQuantity = 0;
-            cart.items.forEach((item) => {
-                countQuantity += item.quantity;
-            });
-            setQuantityInCart(countQuantity);
+          let countQuantity = 0;
+          cart.items.forEach((item) => {
+            countQuantity += item.quantity;
+          });
+          setQuantityInCart(countQuantity);
         } else {
-            setQuantityInCart(0);
+          setQuantityInCart(0);
         }
-    }, [cart]); 
+      }, [cart]);
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
         '& .MuiBadge-badge': {
