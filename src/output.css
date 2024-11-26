@@ -554,8 +554,24 @@ video {
   display: none;
 }
 
+.box-content {
+  box-sizing: content-box;
+}
+
 .flex {
   display: flex;
+}
+
+.table {
+  display: table;
+}
+
+.hidden {
+  display: none;
+}
+
+.border {
+  border-width: 1px;
 }
 
 .uppercase {
