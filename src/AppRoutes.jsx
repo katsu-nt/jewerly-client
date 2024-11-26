@@ -8,6 +8,7 @@ import ClientLayout from './layouts/ClientLayout.jsx';
 import AdminLayout from "./layouts/AdminLayout.jsx"
 import HomePage from './pages/HomePage.jsx';
 import ListProduct from './components/ListProduct.jsx';
+import DetailProduct from './components/DetailProduct.jsx';
 
 const AppRoutes = () => {
   return (
@@ -36,6 +37,12 @@ const AppRoutes = () => {
             path="/vong-lac"
             element={
               <ClientLayout><ListProduct /></ClientLayout>
+            }
+          />
+          <Route
+            path="/vong-lac/detail"
+            element={
+              <ClientLayout><DetailProduct /></ClientLayout>
             }
           />
           <Route path="*" element={<Navigate to="/trang-chu"></Navigate>}></Route>
