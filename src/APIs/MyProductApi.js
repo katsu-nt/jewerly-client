@@ -78,4 +78,25 @@ export const deleteProduct = async (id) => {
   }
 };
 
+export const searchProductByName = async (valueSearch) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/admin/product/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: valueSearch }), // Truyền giá trị tìm kiếm trong body
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Lỗi khi tìm kiếm sản phẩm");
+    }
+
+    return response.json(); // Trả về kết quả tìm kiếm từ server
+  } catch (error) {
+    console.error("Lỗi khi gọi API tìm kiếm:", error);
+    throw error;
+  }
+};
 

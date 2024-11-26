@@ -11,7 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { MenuItem, Select } from '@mui/material';
-import { deleteProduct, getAllProducts, insertProduct, updateProduct } from '../APIs/MyProductApi';
+import { deleteProduct, getAllProducts, insertProduct, searchProductByName, updateProduct } from '../APIs/MyProductApi';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,6 +50,7 @@ const listCategories = [
 const ManageProductAdmin = () => {
   const [open, setOpen] = React.useState(false);
   const [errors, setErrors] = useState({});
+  const [valueSearch, setValueSearch] = useState('');
   const [listProduct, setListProduct] = useState([]);
   const [statusDrawer, setStatusDrawer] = useState(); // 1 Thêm mới, 2 Chỉnh sửa
   // State để lưu dữ liệu từ Drawer
@@ -79,12 +80,13 @@ const ManageProductAdmin = () => {
     }
   };
 
+  // Hàm dùng để xóa sản phẩm
   const handleDeleteProduct = async (id) => {
     try {
       if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
         await deleteProduct(id); // Gọi API xóa sản phẩm
         console.log("Xóa sản phẩm thành công");
-  
+
         // Cập nhật lại danh sách sản phẩm sau khi xóa
         fetchProducts();
       }
@@ -160,6 +162,10 @@ const ManageProductAdmin = () => {
       [field]: value,
     }));
   };
+
+  const handleValueSearch = (value) => {
+    setValueSearch(value);
+  }
 
   const handleSizeChange = (size, value) => {
     setNewProduct((prev) => ({
@@ -255,6 +261,22 @@ const ManageProductAdmin = () => {
     }
   };
 
+  const handleSearch = async () => {
+    try {
+      const products = await searchProductByName(valueSearch); // Gọi API tìm kiếm với POST
+      setListProduct(products); // Cập nhật danh sách sản phẩm hiển thị
+    } catch (error) {
+      console.error("Lỗi khi tìm kiếm sản phẩm:", error);
+    }
+  };
+
+  // Hàm xử lý khi nhấn Enter
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(valueSearch);
+    }
+  };
+
   const fetchProducts = async () => {
     try {
       const products = await getAllProducts();
@@ -272,7 +294,19 @@ const ManageProductAdmin = () => {
     <div className='manage-product-admin-component'>
       {/* FILTER */}
       <div className="group-filter-container">
-        <div className='group-filter'></div>
+        <div className='group-filter'>
+          <input
+            className="input-search"
+            type="text"
+            placeholder="Tìm kiếm theo tên sản phẩm..."
+            value={valueSearch}
+            onChange={(e) => handleValueSearch(e.target.value)} // Cập nhật giá trị nhập
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Lắng nghe sự kiện Enter
+          />
+          <div className="button-search" onClick={handleSearch}>
+            Tìm
+          </div>
+        </div>
         <div onClick={onClickAddNew} className='button-add'>Thêm mới sản phẩm</div>
       </div>
 

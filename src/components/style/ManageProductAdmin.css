@@ -80,3 +80,27 @@
     font-size: 12px;
     margin-top: 5px;
 }
+
+.input-search{
+    height: 36px;
+    border: 1px solid #a3a3a3;
+    font-size: 14px;
+    min-width: 500px;
+    border-radius: 4px;
+    padding: 0 10px;
+}
+
+.group-filter{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.button-search{
+    color: #fff;
+    padding: 6px 18px;
+    background-color: rgb(0, 87, 7);
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
+}
