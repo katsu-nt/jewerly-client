@@ -8,14 +8,6 @@ export default function ClientLayout({ children }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  // Lấy dữ liệu mock khi component được mount
-  useEffect(() => {
-    if(role == 'admin'){
-      logout();
-      navigate('/login')
-      localStorage.clear();
-    }
-  }, role);
   return (
     <div>
       <HeaderClient></HeaderClient>
