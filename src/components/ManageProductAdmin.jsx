@@ -230,9 +230,10 @@ const ManageProductAdmin = () => {
               <Select
                 labelId="demo-select-size-label"
                 label="Loại sản phẩm"
+                className='dropdown-type'
               >
                 {listCategories.map((cate) => (
-                  <MenuItem value={cate.id}>{cate.name}</MenuItem>
+                  <MenuItem key={cate.id} value={cate.id}>{cate.name}</MenuItem>
                 ))}
               </Select>
             </div>
@@ -242,10 +243,31 @@ const ManageProductAdmin = () => {
               <Select
                 labelId="demo-select-gender-label"
                 label="Giới tính"
+                className='dropdown-gender'
               >
                 <MenuItem value={1}>Nam</MenuItem>
                 <MenuItem value={2}>Nữ</MenuItem>
               </Select>
+            </div>
+
+            <div className="box-content">
+              <div className="text">Giá tiền</div>
+              <input className='input-name' type="text" />
+            </div>
+
+            <div className="box">
+              <div className="text">Size M</div>
+              <input className='input-size' type="text" />
+            </div>
+
+            <div className="box">
+              <div className="text">Size L</div>
+              <input className='input-size' type="text" />
+            </div>
+
+            <div className="box">
+              <div className="text">Size XL</div>
+              <input className='input-size' type="text" />
             </div>
           </div>
 
