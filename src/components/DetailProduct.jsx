@@ -125,11 +125,11 @@ export default function DetailProduct() {
                 <div className='block-add-cart'>
                   <div className='box-choose-quantity'>
                     <button className='btn-decrease' onClick={decrease}>
-                      <i class="fa-solid fa-minus"></i>
+                      <i className="fa-solid fa-minus"></i>
                     </button>
                     <span >{count}</span>
                     <button className='btn-increase' onClick={increase}>
-                      <i class="fa-solid fa-plus"></i>
+                      <i className="fa-solid fa-plus"></i>
                     </button>
                   </div>
 
