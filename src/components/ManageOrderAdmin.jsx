@@ -17,32 +17,27 @@ import { useEffect } from 'react';
 import { getAllOrders } from '../APIs/MyOrderApi';
 import { useState } from 'react';
 
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
-  };
-}
-
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+
+  const formatDateTime = (isoString) => {
+    const date = new Date(isoString);
+
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    const year = date.getUTCFullYear();
+
+    return `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+  };
+
+  const formatCurrency = (amount) => {
+    return amount.toLocaleString('vi-VN').replace(/,/g, '.') + ' đ';
+  };
 
   return (
     <React.Fragment>
@@ -56,41 +51,49 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
+        <TableCell component="th" scope="row">{row.user.name}</TableCell>
+        <TableCell component="th" scope="row">{row.deliveryDetails.name}</TableCell>
+        <TableCell>{formatDateTime(row.createdAt)}</TableCell>
+        <TableCell>{row.deliveryDetails.address}</TableCell>
+        <TableCell>{row.deliveryDetails.city}</TableCell>
+        <TableCell align='center'>{formatCurrency(row.cart.totalAmount)}</TableCell>
+        <TableCell align='center'>{row.status}</TableCell>
+        <TableCell align='right'>
+          {row.status == 'Đã đặt' && (<div>Đang vận chuyển</div>)}
+          {row.status == 'Đang vận chuyển' && (<div>Đang vận chuyển</div>)}
         </TableCell>
-        <TableCell align="right"></TableCell>
-        <TableCell align="right"></TableCell>
-        <TableCell align="right"></TableCell>
-        <TableCell align="right"></TableCell>
       </TableRow>
+      
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0, backgroundColor: '#eaeaea' }} colSpan={12}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
+              {/* <Typography variant="h6" gutterBottom component="div">
+                Danh sách sản phẩm
+              </Typography> */}
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell style={{fontWeight: '600'}} align='center'>Hình ảnh</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Sản phẩm</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Kích thước</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Giá sản phẩm</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Số lượng</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Tổng tiền</TableCell>
                   </TableRow>
                 </TableHead>
+                
                 <TableBody>
                   {row.listProduct.map((product, i) => (
                     <TableRow key={i}>
-                      {/* <TableCell component="th" scope="row">
-                        
+                      <TableCell scope="row">
+                        <img style={{ width: '30px', height: '30px', margin: 'auto' }} src={product.imageUrl} alt="" />
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell> */}
+                      <TableCell>{product.nameProduct}</TableCell>
+                      <TableCell>{product.size}</TableCell>
+                      <TableCell>{formatCurrency(1)}</TableCell>
+                      <TableCell>{product.quantity}</TableCell>
+                      <TableCell>{product.quantity * product.price}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -103,39 +106,12 @@ function Row(props) {
   );
 }
 
-// Row.propTypes = {
-//   row: PropTypes.shape({
-//     calories: PropTypes.number.isRequired,
-//     carbs: PropTypes.number.isRequired,
-//     fat: PropTypes.number.isRequired,
-//     history: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         amount: PropTypes.number.isRequired,
-//         customerId: PropTypes.string.isRequired,
-//         date: PropTypes.string.isRequired,
-//       }),
-//     ).isRequired,
-//     name: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired,
-//     protein: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
-
-// const rows = [
-//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-//   createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-//   createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-//   createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-// ];
-
 export default function ManageOrderAdmin() {
   const [listOrders, setListOrders] = useState([]);
 
   const fetchOrders = async () => {
     try {
       const orders = await getAllOrders();
-      console.log(orders);
       setListOrders(orders);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách đơn hàng:", error);
@@ -152,15 +128,17 @@ export default function ManageOrderAdmin() {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Tên khách hàng</TableCell>
-            <TableCell>Ngày đặt</TableCell>
-            <TableCell>Địa chỉ</TableCell>
-            <TableCell>Tỉnh/Thành phố</TableCell>
-            <TableCell>Tổng thành tiền</TableCell>
-            <TableCell>Trạng thái</TableCell>
-            <TableCell>Tùy chỉnh</TableCell>
+            <TableCell style={{fontWeight: '600'}}>Tên người đặt</TableCell>
+            <TableCell style={{fontWeight: '600'}}>Tên người nhận</TableCell>
+            <TableCell style={{fontWeight: '600'}}>Ngày đặt</TableCell>
+            <TableCell style={{fontWeight: '600'}}>Địa chỉ</TableCell>
+            <TableCell style={{fontWeight: '600'}}>Tỉnh/Thành phố</TableCell>
+            <TableCell align='center' style={{fontWeight: '600'}}>Tổng thành tiền</TableCell>
+            <TableCell align='center' style={{fontWeight: '600'}}>Trạng thái</TableCell>
+            <TableCell align='right' style={{fontWeight: '600'}}>Tùy chỉnh</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
           {listOrders.map((order, i) => (
             <Row key={i} row={order} />
