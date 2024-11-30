@@ -14,11 +14,11 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useEffect } from 'react';
-import { getAllOrders } from '../APIs/MyOrderApi';
+import { getAllOrders, updateStatus } from '../APIs/MyOrderApi';
 import { useState } from 'react';
 
 function Row(props) {
-  const { row } = props;
+  const { row, fetchOrders } = props; // Nhận fetchOrders từ props
   const [open, setOpen] = React.useState(false);
 
   const formatDateTime = (isoString) => {
@@ -37,7 +37,18 @@ function Row(props) {
 
   const formatCurrency = (amount) => {
     return amount.toLocaleString('vi-VN').replace(/,/g, '.') + ' đ';
-  };
+  }
+
+  const updateStatusOrder = async (order, newStatus) => {
+    try {
+      order.status = newStatus;
+      await updateStatus(order);
+      fetchOrders(); // Gọi lại fetchOrders để lấy danh sách đơn hàng mới
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  }
+
 
   return (
     <React.Fragment>
@@ -59,11 +70,11 @@ function Row(props) {
         <TableCell align='center'>{formatCurrency(row.cart.totalAmount)}</TableCell>
         <TableCell align='center'>{row.status}</TableCell>
         <TableCell align='right'>
-          {row.status == 'Đã đặt' && (<div>Đang vận chuyển</div>)}
-          {row.status == 'Đang vận chuyển' && (<div>Đang vận chuyển</div>)}
+          {row.status == 'Đã đặt' && (<button onClick={() => updateStatusOrder(row, 'Đang vận chuyển')} style={{ backgroundColor: "#DDDDDD", borderRadius: 6, padding: 7 }}>Đang vận chuyển</button>)}
+          {row.status == 'Đang vận chuyển' && (<button onClick={() => updateStatusOrder(row, 'Giao hàng thành công')} style={{ backgroundColor: "#DDDDDD", borderRadius: 6, padding: 7 }}>Giao hàng thành công</button>)}
         </TableCell>
       </TableRow>
-      
+
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0, backgroundColor: '#eaeaea' }} colSpan={12}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -74,15 +85,15 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{fontWeight: '600'}} align='center'>Hình ảnh</TableCell>
-                    <TableCell style={{fontWeight: '600'}}>Sản phẩm</TableCell>
-                    <TableCell style={{fontWeight: '600'}}>Kích thước</TableCell>
-                    <TableCell style={{fontWeight: '600'}}>Giá sản phẩm</TableCell>
-                    <TableCell style={{fontWeight: '600'}}>Số lượng</TableCell>
-                    <TableCell style={{fontWeight: '600'}}>Tổng tiền</TableCell>
+                    <TableCell style={{ fontWeight: '600' }} align='center'>Hình ảnh</TableCell>
+                    <TableCell style={{ fontWeight: '600' }}>Sản phẩm</TableCell>
+                    <TableCell style={{ fontWeight: '600' }}>Kích thước</TableCell>
+                    <TableCell style={{ fontWeight: '600' }}>Giá sản phẩm</TableCell>
+                    <TableCell style={{ fontWeight: '600' }}>Số lượng</TableCell>
+                    <TableCell style={{ fontWeight: '600' }}>Tổng tiền</TableCell>
                   </TableRow>
                 </TableHead>
-                
+
                 <TableBody>
                   {row.listProduct.map((product, i) => (
                     <TableRow key={i}>
@@ -128,20 +139,20 @@ export default function ManageOrderAdmin() {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell style={{fontWeight: '600'}}>Tên người đặt</TableCell>
-            <TableCell style={{fontWeight: '600'}}>Tên người nhận</TableCell>
-            <TableCell style={{fontWeight: '600'}}>Ngày đặt</TableCell>
-            <TableCell style={{fontWeight: '600'}}>Địa chỉ</TableCell>
-            <TableCell style={{fontWeight: '600'}}>Tỉnh/Thành phố</TableCell>
-            <TableCell align='center' style={{fontWeight: '600'}}>Tổng thành tiền</TableCell>
-            <TableCell align='center' style={{fontWeight: '600'}}>Trạng thái</TableCell>
-            <TableCell align='right' style={{fontWeight: '600'}}>Tùy chỉnh</TableCell>
+            <TableCell style={{ fontWeight: '600' }}>Tên người đặt</TableCell>
+            <TableCell style={{ fontWeight: '600' }}>Tên người nhận</TableCell>
+            <TableCell style={{ fontWeight: '600' }}>Ngày đặt</TableCell>
+            <TableCell style={{ fontWeight: '600' }}>Địa chỉ</TableCell>
+            <TableCell style={{ fontWeight: '600' }}>Tỉnh/Thành phố</TableCell>
+            <TableCell align='center' style={{ fontWeight: '600' }}>Tổng thành tiền</TableCell>
+            <TableCell align='center' style={{ fontWeight: '600' }}>Trạng thái</TableCell>
+            <TableCell align='right' style={{ fontWeight: '600' }}>Tùy chỉnh</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
           {listOrders.map((order, i) => (
-            <Row key={i} row={order} />
+            <Row key={i} row={order} fetchOrders={fetchOrders} />
           ))}
         </TableBody>
       </Table>
