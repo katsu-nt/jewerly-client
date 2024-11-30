@@ -37,9 +37,20 @@ export default function DetailProduct() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setlistBreadCrum(mocListBreadCrum);
-    setItemProduct(JSON.parse(localStorage.getItem('current-product'))
-  );
+    const currentProduct = JSON.parse(localStorage.getItem('current-product'));
+  
+    if (currentProduct) {
+      setItemProduct(currentProduct); 
+
+      // Cập nhật mocListBreadCrum với thông tin sản phẩm hiện tại
+      const updatedBreadCrum = [...mocListBreadCrum];
+      updatedBreadCrum[2] = {
+        ...updatedBreadCrum[2],
+        name: currentProduct.nameProduct,
+        link: window.location.pathname, // URL hiện tại
+      };
+      setlistBreadCrum(updatedBreadCrum);
+    }
   }, []);
 
   const onClickCategory = (cate) => {
