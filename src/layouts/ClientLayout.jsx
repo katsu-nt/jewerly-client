@@ -8,7 +8,7 @@ export default function ClientLayout({ children }) {
   return (
     <div>
       <HeaderClient></HeaderClient>
-      <div style={{ height: 'calc(100vh - 136px)', overflowY: 'auto', overflowX: 'hidden' }}>
+      <div style={{ height: 'calc(100vh - 136px)', overflowY: 'hidden', overflowX: 'hidden' }}>
         {children}
         {isOpen ? <CartDrawer /> : <></>}
       </div>

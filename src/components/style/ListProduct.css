@@ -68,4 +68,7 @@
     flex-wrap: wrap;
     row-gap: 40px;
     column-gap: 20px;
+    height: 600px;
+    overflow: auto;
+    padding-right: 10px;
 }

@@ -102,7 +102,6 @@ export const searchProductByName = async (valueSearch) => {
 
 
 export const getProductByFilter = async (filters) => {
-    console.log(filters)
     try {
       const response = await fetch(`${API_BASE_URL}/api/admin/product/filter`, {
         method: "POST",
@@ -122,3 +121,25 @@ export const getProductByFilter = async (filters) => {
       throw error;
     }
   };
+
+  export const getProductByID = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/admin/product/id`, {
+        method: "POST", // Đổi thành POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }), // Đóng gói `id` vào body
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch find product");
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error("Error find product:", error.message);
+      throw error;
+    }
+  };
+  

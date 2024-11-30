@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style/DetailProduct.css';
+import { getProductByID } from "../APIs/MyProductApi";
 
 // mock data breadcrum
 const mocListBreadCrum = [
   { id: 1, name: 'Trang chủ', link: '/trang-chu' },
-  { id: 2, name: 'Vòng-Lắc', link: '/vong-lac' },
+  { id: 2, name: '', link: '/vong-lac' },
   { id: 3, name: 'Lắc tay bạc nữ mạ bạch kim đính đá CZ cỏ 4 lá LILI_612672', link: '/bong-tai' },
 ];
 
@@ -27,7 +28,6 @@ const mockItemProduct =
 
 
 export default function DetailProduct() {
-  const codeProduct = JSON.parse(localStorage.getItem('CodeProduct'));
   const [listBreadCrum, setlistBreadCrum] = useState([]);
   const [itemProduct, setItemProduct] = useState();
   const [quantitySize, setQuantitySize] = useState(null);
@@ -37,21 +37,37 @@ export default function DetailProduct() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const currentProduct = JSON.parse(localStorage.getItem('current-product'));
+    const fetchProduct = async () => {
+      const currentProduct = JSON.parse(localStorage.getItem('current-product'));
   
-    if (currentProduct) {
-      setItemProduct(currentProduct); 
-
-      // Cập nhật mocListBreadCrum với thông tin sản phẩm hiện tại
-      const updatedBreadCrum = [...mocListBreadCrum];
-      updatedBreadCrum[2] = {
-        ...updatedBreadCrum[2],
-        name: currentProduct.nameProduct,
-        link: window.location.pathname, // URL hiện tại
-      };
-      setlistBreadCrum(updatedBreadCrum);
-    }
+      if (currentProduct) {
+        try {
+          const product = await getProductByID(currentProduct._id); // Sử dụng await để đợi kết quả
+          if (product) {
+            setItemProduct(product);
+  
+            // Cập nhật mocListBreadCrum với thông tin sản phẩm hiện tại
+            const updatedBreadCrum = [...mocListBreadCrum];
+            updatedBreadCrum[1] = {
+              ...updatedBreadCrum[1],
+              name: product.typeProduct, // Lấy từ API
+            };
+            updatedBreadCrum[2] = {
+              ...updatedBreadCrum[2],
+              name: product.nameProduct,
+              link: window.location.pathname, // URL hiện tại
+            };
+            setlistBreadCrum(updatedBreadCrum);
+          }
+        } catch (error) {
+          console.error('Lỗi khi lấy sản phẩm:', error); // Xử lý lỗi
+        }
+      }
+    };
+  
+    fetchProduct();
   }, []);
+  
 
   const onClickCategory = (cate) => {
     navigate(cate.link);
